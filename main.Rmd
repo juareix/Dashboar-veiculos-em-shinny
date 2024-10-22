@@ -87,4 +87,13 @@ freq_cambio %>%
   
   
 ```
+#Frequencia de anuncio por COR
+```{r}
+dados_select %>%
+  group_by(COR) %>%
+  summarise(QTD = n()) %>%
+  ggplot() + 
+    geom_bar(aes(x = COR, y = QTD), stat = 'identity')
+  
+```
 
