@@ -25,7 +25,8 @@ library(dplyr)
 #Importando os dados:
 ```{r}
 library(readr)
-dados <- read_csv("Dashboard-veiculos-em-shinny/dados_shiny_2022081822.csv")
+dados <- read_csv("dados_shiny_2022081822.csv")
+View(dados_shiny_2022081822)
 ```
 #filtro teste
 ```{r}
@@ -87,6 +88,27 @@ freq_cambio %>%
   
   
 ```
+#Frequencia de valor por tipo de anuncio
+```{r}
+dados_select %>%
+  ggplot() + 
+  geom_boxplot(aes(x = TIPO_ANUNCIO, y = VALOR, fill = UF)) +
+  ggtitle('Variação de preço por UF')
+```
+#Frequencia por tipo de direção
+
+```{r}
+dados_select %>%
+  count(DIREÇÃO) %>%
+  ggplot(aes(x = DIREÇÃO, y = n, fill = DIREÇÃO)) + 
+  geom_bar(stat = "identity") +
+  ggtitle('Frequência por Tipo de Direção') +
+  xlab('Tipo de Direção') +
+  ylab('Frequência')
+
+```
+
+
 #Frequencia de anuncio por COR
 ```{r}
 dados_select %>%
