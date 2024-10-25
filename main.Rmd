@@ -14,6 +14,7 @@ install.packages("ggplot2")
 #Chamando as Bibliotecas
 ```{r}
 library(ggplot2)
+library(plotly)
 ```
 
 
@@ -30,12 +31,17 @@ View(dados_shiny_2022081822)
 ```
 #filtro teste
 ```{r}
-modelo <- 'corolla xei 16v'
+modelo <- 'corolla xei 16v' 
 uf <- c('mt', 'se')
 
 dados_select <- dados %>% filter(MODELO == modelo &
                         UF %in% uf)
 
+```
+
+
+```{r}
+theme_set(theme_classic())
 ```
 
 Valor medio ao longo do tempo
@@ -46,26 +52,36 @@ mediana_data <- dados_select %>%
     summarise(mediaValor = median(VALOR))
 
 
-mediana_data %>%
+ggplotly(
+  mediana_data %>%
   ggplot() + 
     geom_line(aes(x = DATA_COLETA_METADADOS, y = mediaValor,
-                  group = UF, colour = UF), size = 1) + ggtitle("Média Valor")
+                  group = UF, color = UF), size = 1) + ggtitle("Média Valor") +
+  scale_color_brewer(palette = "Dark2")
+)
 ```
 Variação de valores por UF
 ```{r}
-dados_select %>%
+ggplotly(
+  dados_select %>%
   ggplot() + 
   geom_boxplot(aes(x = UF, y = VALOR, fill = UF)) +
-  ggtitle('Variação de preço por UF')
+  ggtitle('Variação de preço por UF') +
+  scale_fill_brewer(palette = "Dark2")
+)
+
 ```
 
 Variação KM, valor e UF
 
 ```{r}
-dados_select %>%
+ggplotly(
+  dados_select %>%
   ggplot() + 
-  geom_point(aes(x = QUILOMETRAGEM, y = VALOR, colour = UF))
-  ggtitle("Distribuição do VALOR e KM por UF")
+  geom_point(aes(x = QUILOMETRAGEM, y = VALOR, color = UF)) +
+  ggtitle("Distribuição do VALOR e KM por UF") +
+  scale_color_brewer(palette = "Dark2")
+)
 ```
 Frequencias dos cambios dos auotmoveis
 
@@ -84,7 +100,8 @@ freq_cambio %>%
   geom_text(aes(y = ypos,
                 label = paste(CÂMBIO, '\n', round(prop, 2), '%')),
             color = 'white', size = 6) +
-  ggtitle('Quantidade por câmbio')
+  ggtitle('Quantidade por câmbio') +
+  scale_fill_brewer(palette = "Dark2")
   
   
 ```
@@ -93,29 +110,44 @@ freq_cambio %>%
 dados_select %>%
   ggplot() + 
   geom_boxplot(aes(x = TIPO_ANUNCIO, y = VALOR, fill = UF)) +
-  ggtitle('Variação de preço por UF')
+  ggtitle('Variação de preço por UF') +
+  scale_fill_brewer(palette = "Dark2")
 ```
 #Frequencia por tipo de direção
 
 ```{r}
-dados_select %>%
-  count(DIREÇÃO) %>%
-  ggplot(aes(x = DIREÇÃO, y = n, fill = DIREÇÃO)) + 
-  geom_bar(stat = "identity") +
-  ggtitle('Frequência por Tipo de Direção') +
-  xlab('Tipo de Direção') +
-  ylab('Frequência')
+freq_direcao <- dados_select %>%
+  group_by(DIREÇÃO) %>%
+  summarise(qtd = n()) %>%
+  mutate(prop = qtd / sum(qtd) * 100) %>%
+  mutate(ypos = cumsum(prop) - 0.5 * prop)
+  
+freq_direcao %>%
+  ggplot(aes(x = '', y = prop, fill = DIREÇÃO)) +
+  geom_bar(stat = 'identity') +
+  coord_polar('y', start = 0) +
+  theme_void() + theme(legend.position = "none") +
+  geom_text(aes(y = ypos,
+                label = paste(DIREÇÃO, '\n', round(prop, 1), '%')),
+            color = 'white', size = 6) +
+  ggtitle('Quantidade por tipo de direção') +
+  scale_fill_brewer(palette = "Dark2")
 
 ```
 
 
 #Frequencia de anuncio por COR
 ```{r}
-dados_select %>%
+ggplotly(
+  dados_select %>%
   group_by(COR) %>%
   summarise(QTD = n()) %>%
   ggplot() + 
-    geom_bar(aes(x = COR, y = QTD), stat = 'identity')
+    geom_bar(aes(x = reorder(COR, QTD), y = QTD, fill = QTD), stat = 'identity') +
+  xlab('COR') + ggtitle('Quantidade por Cor') +
+  theme(legend.position = 'none')
+    
+)
   
 ```
 
