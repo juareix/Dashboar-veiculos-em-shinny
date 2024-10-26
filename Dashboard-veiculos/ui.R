@@ -23,11 +23,15 @@ fluidPage(
                         "Number of bins:",
                         min = 1,
                         max = 50,
-                        value = 30)
+                        value = 30),
+            
+            selectInput(inputId = "idModelos", label = "Modelo: ",
+                        choices = c(sort(unique(dados$MODELO))))
         ),
 
         # Show a plot of the generated distribution
         mainPanel(
+            
             plotOutput("distPlot"),
             plotlyOutput(outputId = "grafico_media_valores"),
             plotlyOutput(outputId = "grafico_boxplot_preco"),

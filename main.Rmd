@@ -172,3 +172,7 @@ ggplotly(
   
 ```
 
+```{r}
+length(unique(dados$MODELO))
+```
+
