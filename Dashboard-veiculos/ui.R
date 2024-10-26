@@ -26,7 +26,12 @@ fluidPage(
                         value = 30),
             
             selectInput(inputId = "idModelos", label = "Modelo: ",
-                        choices = c(sort(unique(dados$MODELO))))
+                        choices = c(sort(unique(toupper(dados$MODELO))))),
+            
+            selectizeInput("iduf", "UF:", 
+                           c(sort(unique(toupper(dados$UF)))),
+                           options = list(maxItems = 4)
+                           )
         ),
 
         # Show a plot of the generated distribution
