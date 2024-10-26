@@ -67,6 +67,7 @@ ggplotly(
   ggplot() + 
   geom_boxplot(aes(x = UF, y = VALOR, fill = UF)) +
   ggtitle('Variação de preço por UF') +
+  theme(legend.position = "none") +
   scale_fill_brewer(palette = "Dark2")
 )
 
@@ -107,11 +108,14 @@ freq_cambio %>%
 ```
 #Frequencia de valor por tipo de anuncio
 ```{r}
-dados_select %>%
+ggplotly(
+  dados_select %>%
   ggplot() + 
   geom_boxplot(aes(x = TIPO_ANUNCIO, y = VALOR, fill = UF)) +
   ggtitle('Variação de preço por UF') +
   scale_fill_brewer(palette = "Dark2")
+) %>% layout(boxmode = "group")
+  
 ```
 #Frequencia por tipo de direção
 
@@ -143,9 +147,14 @@ ggplotly(
   group_by(COR) %>%
   summarise(QTD = n()) %>%
   ggplot() + 
-    geom_bar(aes(x = reorder(COR, QTD), y = QTD, fill = QTD), stat = 'identity') +
+    geom_bar(aes(x = reorder(COR, QTD), y = QTD, fill = QTD,
+                 text = paste("COR:", COR, "\n",
+                              "QTD:", QTD)
+                 ), stat = 'identity') +
   xlab('COR') + ggtitle('Quantidade por Cor') +
-  theme(legend.position = 'none')
+  theme(legend.position = 'none'), 
+  
+  tooltip = c("text")
     
 )
   
