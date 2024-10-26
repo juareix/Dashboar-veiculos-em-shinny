@@ -93,16 +93,22 @@ freq_cambio <- dados_select %>%
   mutate(prop = qtd / sum(qtd) * 100) %>%
   mutate(ypos = cumsum(prop) - 0.5 * prop)
   
-freq_cambio %>%
-  ggplot(aes(x = '', y = prop, fill = CÂMBIO)) +
-  geom_bar(stat = 'identity') +
-  coord_polar('y', start = 0) +
-  theme_void() + theme(legend.position = "none") +
-  geom_text(aes(y = ypos,
-                label = paste(CÂMBIO, '\n', round(prop, 2), '%')),
-            color = 'white', size = 6) +
-  ggtitle('Quantidade por câmbio') +
-  scale_fill_brewer(palette = "Dark2")
+# freq_cambio %>%
+#   ggplot(aes(x = '', y = prop, fill = CÂMBIO)) +
+#   geom_bar(stat = 'identity') +
+#   coord_polar('y', start = 0) +
+#   theme_void() + theme(legend.position = "none") +
+#   geom_text(aes(y = ypos,
+#                 label = paste(CÂMBIO, '\n', round(prop, 2), '%')),
+#             color = 'white', size = 6) +
+#   ggtitle('Quantidade por câmbio') +
+#   scale_fill_brewer(palette = "Dark2")
+
+
+plot_ly(freq_cambio, labels = ~CÂMBIO, values = ~prop,
+        type = 'pie', textinfo = "label+percent",
+        showlegend = FALSE) %>%
+    layout(title = 'Quantidade por Câmbio')
   
   
 ```
@@ -126,16 +132,22 @@ freq_direcao <- dados_select %>%
   mutate(prop = qtd / sum(qtd) * 100) %>%
   mutate(ypos = cumsum(prop) - 0.5 * prop)
   
-freq_direcao %>%
-  ggplot(aes(x = '', y = prop, fill = DIREÇÃO)) +
-  geom_bar(stat = 'identity') +
-  coord_polar('y', start = 0) +
-  theme_void() + theme(legend.position = "none") +
-  geom_text(aes(y = ypos,
-                label = paste(DIREÇÃO, '\n', round(prop, 1), '%')),
-            color = 'white', size = 6) +
-  ggtitle('Quantidade por tipo de direção') +
-  scale_fill_brewer(palette = "Dark2")
+# freq_direcao %>%
+#   ggplot(aes(x = '', y = prop, fill = DIREÇÃO)) +
+#   geom_bar(stat = 'identity') +
+#   coord_polar('y', start = 0) +
+#   theme_void() + theme(legend.position = "none") +
+#   geom_text(aes(y = ypos,
+#                 label = paste(DIREÇÃO, '\n', round(prop, 1), '%')),
+#             color = 'white', size = 6) +
+#   ggtitle('Quantidade por tipo de direção') +
+#   scale_fill_brewer(palette = "Dark2")
+
+plot_ly(freq_direcao, labels = ~DIREÇÃO, values = ~prop,
+        type = 'pie', textinfo = "label+percent",
+        showlegend = FALSE) %>%
+    layout(title = 'Quantidade por Direção')
+  
 
 ```
 
