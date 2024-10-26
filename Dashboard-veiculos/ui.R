@@ -31,7 +31,17 @@ fluidPage(
             selectizeInput("iduf", "UF:", 
                            c(sort(unique(toupper(dados$UF)))),
                            options = list(maxItems = 4)
-                           )
+                           ),
+            
+            sliderInput("idAno",
+                        "Ano do automovel:",
+                        min = min(dados$ANO),
+                        max = max(dados$ANO),
+                        value = 2023, sep = ""),
+            
+            checkboxGroupInput("idOpcionais", "Opicionais",
+                               choices = colnames(dados)[seq(27, 36)],
+                               inline = T)
         ),
 
         # Show a plot of the generated distribution
