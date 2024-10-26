@@ -9,6 +9,7 @@
 
 library(shiny)
 
+
 # Define UI for application that draws a histogram
 fluidPage(
 
@@ -28,7 +29,14 @@ fluidPage(
         # Show a plot of the generated distribution
         mainPanel(
             plotOutput("distPlot"),
-            plotOutput(outputId =  "distPlot")
+            plotlyOutput(outputId = "grafico_media_valores"),
+            plotlyOutput(outputId = "grafico_boxplot_preco"),
+            plotlyOutput(outputId = "grafico_km_valor"),
+            plotlyOutput(outputId = "grafico_tipo_anuncio"),
+            plotlyOutput(outputId = "grafico_pie_cambio"),
+            plotlyOutput(outputId = "grafico_pie_direcao"),
+            plotlyOutput(outputId = "grafico_bar_cor"),
+            
         )
     )
 )
