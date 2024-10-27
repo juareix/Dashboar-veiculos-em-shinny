@@ -8,10 +8,26 @@
 #
 
 library(shiny)
+dados <- read_csv("dados_shiny_2022081822.csv")
+
+
+
 
 # Define server logic required to draw a histogram
 function(input, output, session) {
     #funçao pra fazer o botão consultam funcionar
+    dados_select <- eventReactive(input$idExecuta, {
+      # modelo <- 'corolla xei 16v' 
+      # uf <- c('mt', 'se')
+      
+      dados %>% filter(MODELO == input$idModelos &
+                                         UF %in% input$iduf)
+    
+    })
+    
+    output$teste <- renderText({
+      paste("DADOS: ", unique(dados_select$UF))
+    })
     
     output$grafico_media_valores <- renderPlotly({
       
