@@ -174,5 +174,6 @@ ggplotly(
 
 ```{r}
 length(unique(dados$MODELO))
+dados$UF <- toupper(dados$)
 ```
 

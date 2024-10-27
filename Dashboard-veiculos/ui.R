@@ -19,11 +19,6 @@ fluidPage(
     # Sidebar with a slider input for number of bins
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30),
             
             selectInput(inputId = "idModelos", label = "Modelo: ",
                         choices = c(sort(unique(toupper(dados$MODELO))))),
@@ -41,13 +36,13 @@ fluidPage(
             
             checkboxGroupInput("idOpcionais", "Opicionais",
                                choices = colnames(dados)[seq(27, 36)],
-                               inline = T)
+                               inline = T),
+            
+            actionButton("idExecuta" , "Consultar")
         ),
 
         # Show a plot of the generated distribution
         mainPanel(
-            
-            plotOutput("distPlot"),
             plotlyOutput(outputId = "grafico_media_valores"),
             plotlyOutput(outputId = "grafico_boxplot_preco"),
             plotlyOutput(outputId = "grafico_km_valor"),
